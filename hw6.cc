@@ -48,10 +48,10 @@ int main() {
   CDKSCREEN     *cdkscreen;
   CDKMATRIX     *myMatrix;           // CDK Screen Matrix 
 
-  const char *rowTitles [MATRIX_ROWS+1] = {"IGNORE", "a", "b", "c", "d", "e"};
-  const char *columnTitles [MATRIX_COLS+1] = {"IGNORE", "a", "b", "c"};
-  int colWidths [MATRIX_COLS+1] = {BOX_WIDTH, BOX_WIDTH, BOX_WIDTH, BOX_WIDTH};
-  int boxTypes [MATRIX_COLS+1] = {vMIXED, vMIXED, vMIXED, vMIXED};
+  const char *rowTitles [MATRIX_ROWS + 1] = {"IGNORE", "a", "b", "c", "d", "e"};
+  const char *columnTitles [MATRIX_COLS + 1] = {"IGNORE", "a", "b", "c"};
+  int colWidths [MATRIX_COLS + 1] = {BOX_WIDTH, BOX_WIDTH, BOX_WIDTH, BOX_WIDTH};
+  int boxTypes [MATRIX_COLS + 1] = {vMIXED, vMIXED, vMIXED, vMIXED};
 
   /*
    * Initialize the Cdk screen.
@@ -91,15 +91,12 @@ int main() {
   BinaryFileHeader *myHeader = new BinaryFileHeader();
   binInfile.read ((char *) myHeader, sizeof(myHeader));
 
-  int numRecordsInt = myHeader->numRecords;
-  BinaryFileRecord record[numRecordsInt];
+  BinaryFileRecord record[4];
 
-  for (int i = 0; i < numRecordsInt; i++) {
+  for (int i = 0; i < 4; i++) {
     // read up to 4 record
     binInfile.read((char*) &record[i],sizeof(BinaryFileRecord));
   }
-
-  binInfile.close();
   
   stringstream magicNumSS;
   magicNumSS << std::hex << std::uppercase << myHeader->magicNumber;
@@ -107,16 +104,57 @@ int main() {
   string magicNumStrFinal = "0x" + magicNumStr;
   string magicNumStrMatrix = "Magic: " + magicNumStrFinal;
 
-  string versionNumStr = to_string(myHeader->versionNumber);
+  string versionNumStr = to_string (myHeader->versionNumber);
   string versionNumStrMatrix = "Version: " + versionNumStr;
 
-  string numRecordsString = to_string(myHeader->numRecords);
+  string numRecordsString = to_string (myHeader->numRecords);
   string numRecordsStrMatrix = "NumRecords: " + numRecordsString;
+
+  int stringBufferLength0 = strlen(record[0].stringBuffer);
+  string bufferLengthStr0 = to_string(stringBufferLength0);
+  string bufferLengthMatrix0 = "strlen: " + bufferLengthStr0;
+
+  int stringBufferLength1 = strlen(record[1].stringBuffer);
+  string bufferLengthStr1 = to_string(stringBufferLength1);
+  string bufferLengthMatrix1 = "strlen: " + bufferLengthStr1;
+
+  int stringBufferLength2 = strlen(record[2].stringBuffer);
+  string bufferLengthStr2 = to_string(stringBufferLength2);
+  string bufferLengthMatrix2 = "strlen: " + bufferLengthStr2;
+
+  int stringBufferLength3 = strlen(record[3].stringBuffer);
+  string bufferLengthStr3 = to_string(stringBufferLength3);
+  string bufferLengthMatrix3 = "strlen: " + bufferLengthStr3;
+  
+  stringstream stringBuffer0SS;
+  stringBuffer0SS << std::hex << record[0].stringBuffer;
+  string stringBuffer0Str = stringBuffer0SS.str();
+
+  stringstream stringBuffer1SS;
+  stringBuffer1SS << std::hex << record[1].stringBuffer;
+  string stringBuffer1Str = stringBuffer1SS.str();
+
+  stringstream stringBuffer2SS;
+  stringBuffer2SS << std::hex << record[2].stringBuffer;
+  string stringBuffer2Str = stringBuffer2SS.str();
+
+  stringstream stringBuffer3SS;
+  stringBuffer3SS << std::hex << record[3].stringBuffer;
+  string stringBuffer3Str = stringBuffer3SS.str();
+;
 
   /* Display the Matrix */
   setCDKMatrixCell (myMatrix, 1, 1, magicNumStrMatrix.c_str());
   setCDKMatrixCell (myMatrix, 1, 2, versionNumStrMatrix.c_str());
   setCDKMatrixCell (myMatrix, 1, 3, numRecordsStrMatrix.c_str());
+  setCDKMatrixCell (myMatrix, 2, 1, bufferLengthMatrix0.c_str());
+  setCDKMatrixCell (myMatrix, 3, 1, bufferLengthMatrix1.c_str());
+  setCDKMatrixCell (myMatrix, 4, 1, bufferLengthMatrix2.c_str());
+  setCDKMatrixCell (myMatrix, 5, 1, bufferLengthMatrix3.c_str());
+  setCDKMatrixCell (myMatrix, 2, 2, stringBuffer0Str.c_str());  
+  setCDKMatrixCell (myMatrix, 3, 2, stringBuffer1Str.c_str());
+  setCDKMatrixCell (myMatrix, 4, 2, stringBuffer2Str.c_str());
+  setCDKMatrixCell (myMatrix, 5, 2, stringBuffer3Str.c_str());
   drawCDKMatrix (myMatrix, true);
 
   /* so we can see results */
@@ -124,6 +162,7 @@ int main() {
 
   // Cleanup screen
   endCDK();
+  binInfile.close();
   delete myHeader;
 
   return 0; 
