@@ -89,7 +89,7 @@ int main() {
   }
 
   BinaryFileHeader *myHeader = new BinaryFileHeader();
-  binInfile.read ((char *) myHeader, sizeof(myHeader));
+  binInfile.read ((char *) myHeader, sizeof(BinaryFileHeader));
 
   BinaryFileRecord record[4];
 
@@ -157,14 +157,18 @@ int main() {
   setCDKMatrixCell (myMatrix, 5, 2, stringBuffer3Str.c_str());
   drawCDKMatrix (myMatrix, true);
 
-  /* so we can see results */
-  sleep (10);
-
-  // Cleanup screen
-  endCDK();
+  // start cleaning up
   binInfile.close();
   delete myHeader;
 
+  // if user enters a char, finish cleanup and exit
+  char charInput;
+  cin >> charInput;
+
+  // finish cleanup
+  endCDK();
+
+  // exit
   return 0; 
 }
 
