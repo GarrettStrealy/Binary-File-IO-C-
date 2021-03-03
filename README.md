@@ -14,6 +14,8 @@ This project demonstrates my  ability to create a multi-file project that is hos
 It also demonstrates my ability to perform Binary File I/O, and my ability to visualize binary data using a CDK
 matrix.
 
+Completed for the "C/C++ Programming in a UNIX Environment" course at The University of Texas - Dallas.
+
 ### App Walkthrough GIF
 
 <img src="https://media2.giphy.com/media/sztSL3kEo17LYugiKt/giphy.gif" width=550><br>
