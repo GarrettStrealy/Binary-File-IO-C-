@@ -1,10 +1,6 @@
 ### Binary file I/O using C++
-Author: Garrett Strealy
-11/21/2020
 
-Description:
-
-Use  binary file I/O techniques to open a supplied binary file. The file consists of a
+Uses  binary file I/O techniques to open a supplied binary file. The file consists of a
 header record that is immediately followed by a set of data records. Read and display the
 header record. Using information in the header record, read the data records from the file.
 For each data record, display the results in a CDK window. After display, wait
